@@ -30,6 +30,7 @@ mod client_storage;
 mod persistence;
 
 pub use client_storage::{LocalStorage, SessionStorage};
+use dioxus::core::{ReactiveContext, current_scope_id, generation, needs_update};
 use dioxus::logger::tracing::trace;
 use futures_util::stream::StreamExt;
 pub use persistence::{
@@ -164,7 +165,7 @@ where
     T: Serialize + DeserializeOwned + Clone + Send + Sync + PartialEq + 'static,
     S::Key: Clone,
 {
-    let signal = {
+    {
         let mode = StorageMode::current();
 
         match mode {
@@ -179,8 +180,7 @@ where
                 *storage_entry.data()
             }
         }
-    };
-    signal
+    }
 }
 
 /// A hook that creates a StorageEntry with the latest value from storage or the init value if it doesn't exist.

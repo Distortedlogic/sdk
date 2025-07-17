@@ -21,11 +21,9 @@
 //!     }
 //! }
 //! ```
+use dioxus::core::provide_root_context;
 use dioxus::hooks::use_effect;
-use dioxus::prelude::{
-    ReadOnlySignal, ScopeId, Signal, Writable, provide_root_context, try_use_context, use_hook,
-    warnings::signal_write_in_component_body,
-};
+use dioxus::prelude::{ReadOnlySignal, ScopeId, Signal, Writable, try_use_context, use_hook};
 use dioxus::signals::Readable;
 use dioxus::warnings::Warning as _;
 use std::error::Error;
@@ -199,12 +197,10 @@ fn listen(mut window_size: Signal<WindowSizeResult>) {
             ..
         } = event
         {
-            signal_write_in_component_body::allow(move || {
-                window_size.set(Ok(WindowSize {
-                    width: size.width,
-                    height: size.height,
-                }));
-            });
+            window_size.set(Ok(WindowSize {
+                width: size.width,
+                height: size.height,
+            }));
         }
     });
 }
